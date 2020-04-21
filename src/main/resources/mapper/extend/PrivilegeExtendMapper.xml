@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.PrivilegeExtendMapper">
+  <resultMap id="BaseResultMap" type="com.bean.extend.PrivilegeExtend" extends="com.dao.PrivilegeMapper.BaseResultMap">
+    <collection property="children" column="id" select="selectChildrenById"></collection>
+  </resultMap>
+  
+  <select id="selectByRoleId" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT p.*
+    FROM privilege p, role_privilege rp
+    WHERE p.id = rp.privilege_id
+    AND rp.role_id = #{id}
+  </select>
+  
+  <select id="selectChildrenById" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT p2.*
+    FROM privilege p1, privilege p2
+    WHERE p1.id = p2.parent_id
+    AND p1.id = #{id}
+  </select>
+</mapper>

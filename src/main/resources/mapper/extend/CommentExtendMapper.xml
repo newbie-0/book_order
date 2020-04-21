@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.CommentExtendMapper">
+  <resultMap id="BaseResultMap" type="com.bean.extend.CommentExtend" extends="com.dao.CommentMapper.BaseResultMap">
+    <association property="user" column="user_id" select="com.dao.extend.UserExtendMapper.selectById"></association>
+  </resultMap>
+
+  <select id="findByBookId" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT *
+    FROM comment
+    WHERE book_id = #{id}
+    AND status = '已审核'
+  </select>
+
+  <select id="findUnCheckedComment" parameterType="String" resultMap="BaseResultMap">
+    SELECT *
+    FROM comment
+    WHERE status = '待审核'
+  </select>
+</mapper>

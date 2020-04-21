@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.UserExtendMapper">
+    <resultMap id="BaseResultMap"
+               type="com.bean.extend.UserExtend"
+                extends="com.dao.UserMapper.BaseResultMap">
+        <association property="role" column="id"
+                     select="com.dao.extend.RoleExtendMapper.selectByUserId"></association>
+    </resultMap>
+    
+    <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT * FROM user
+        WHERE id = #{id}
+    </select>
+    
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM user
+    </select>
+    
+    <update id="updateStatus" parameterType="map">
+        UPDATE user
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+</mapper>

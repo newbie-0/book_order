@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.ExpressExtendMapper">
+  <resultMap id="BaseResultMap" type="com.bean.extend.ExpressExtend" extends="com.dao.ExpressMapper.BaseResultMap">
+    <association property="orderExtend" column="order_id" select="com.dao.extend.OrderExtendMapper.selectById"></association>
+  </resultMap>
+  
+  <select id="findAllByMerchant" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT e.*
+    FROM express e, t_order o
+    WHERE e.order_id = o.id
+    AND o.merchant = #{merchant}
+  </select>
+  
+  <select id="findByOrderId" parameterType="Integer" resultMap="com.dao.ExpressMapper.BaseResultMap">
+    SELECT *
+    FROM express
+    WHERE order_id = #{id}
+  </select>
+</mapper>

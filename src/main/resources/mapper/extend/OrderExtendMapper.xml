@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.OrderExtendMapper">
+  <resultMap id="BaseResultMap" type="com.bean.extend.OrderExtend" extends="com.dao.OrderMapper.BaseResultMap">
+    <association property="user" column="user_id" select="com.dao.extend.UserExtendMapper.selectById"></association>
+    <association property="book" column="book_id" select="com.dao.BookMapper.selectByPrimaryKey"></association>
+    <association property="site" column="site_id" select="com.dao.SiteMapper.selectByPrimaryKey"></association>
+    <association property="merch" column="merchant" select="com.dao.extend.UserExtendMapper.selectById"></association>
+    <association property="express" column="id" select="com.dao.extend.ExpressExtendMapper.findByOrderId"></association>
+  </resultMap>
+  
+  <select id="findByMerchant" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT *
+    FROM t_order
+    WHERE merchant = #{id}
+  </select>
+
+  <select id="findByUserIdAndStatus" parameterType="map" resultMap="BaseResultMap">
+    SELECT *
+    FROM t_order
+    <where>
+      <if test="userId != null">
+        AND user_id = #{userId}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+    </where>
+  </select>
+
+  <select id="findOrderLike" parameterType="map" resultMap="BaseResultMap">
+    SELECT *
+    FROM t_order
+    <where>
+      <if test="userId != null">
+        AND user_id = #{userId}
+      </if>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+      <if test="consignee != null">
+        AND consignee LIKE concat('%', #{consignee}, '%')
+      </if>
+      <if test="date != null">
+        AND datediff(submit_time, #{date}) = 0
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectById" parameterType="Integer" resultMap="BaseResultMap">
+    SELECT *
+    FROM t_order
+    WHERE id = #{id}
+  </select>
+</mapper>

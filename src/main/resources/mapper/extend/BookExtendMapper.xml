@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.extend.BookExtendMapper">
+    <resultMap id="BookExtendResultMap" extends="com.dao.BookMapper.BaseResultMap"
+               type="com.bean.extend.BookExtend">
+        <collection property="relations" column="id" select="findRelationBook"></collection>
+    </resultMap>
+
+    <select id="findBookLike" parameterType="map" resultMap="com.dao.BookMapper.BaseResultMap">
+      SELECT * FROM book
+      <where>
+          <if test="status != null">
+              and status = #{status}
+          </if>
+          <if test="name != null">
+            and name like concat('%', #{name}, '%')
+          </if>
+          <if test="categoryId != null">
+              and category_id = #{categoryId}
+          </if>
+      </where>
+      <if test= "orderField != null and orderField != ''">
+        ORDER BY
+          <choose>
+              <when test="orderField == 'price'">
+                  price ASC 
+              </when>
+              <when test="orderField == 'sale'">
+                  sale DESC
+              </when>
+          </choose>
+      </if>
+    </select>
+    
+    <select id="findRelationBook" parameterType="Integer" resultMap="com.dao.BookMapper.BaseResultMap">
+        SELECT b.*
+        FROM book b, relation r
+        WHERE b.id = r.relation_id
+        AND r.book_id = #{id}
+    </select>
+
+    <select id="findByUserIdAndStatus" parameterType="map" resultMap="BookExtendResultMap">
+        SELECT *
+        FROM book
+        <where>
+          <if test="userId != null">
+              and user_id = #{userId}
+          </if>
+          <if test="status != null">
+              and status = #{status}
+          </if>
+        </where>
+    </select>
+</mapper>
