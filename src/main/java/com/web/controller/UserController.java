@@ -70,9 +70,13 @@ public class UserController {
 
     @ApiOperation("添加用户")
     @PostMapping("/save")
-    public Message save(User user) throws Exception {
-        userService.save(user);
-        return MessageUtil.success("添加成功");
+    public Message save(User user) {
+        try {
+            userService.save(user);
+            return MessageUtil.success("添加成功");
+        } catch (Exception e) {
+            return MessageUtil.error(e.getMessage());
+        }
     }
 
     @ApiOperation("更新用户信息")

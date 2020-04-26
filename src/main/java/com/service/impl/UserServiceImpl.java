@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) throws Exception {
         user.setBalance(new BigDecimal(0));
+        user.setStatus(true);
         UserExample userExample = new UserExample();
         userExample.createCriteria().andUsernameEqualTo(user.getUsername());
         List<User> list = userMapper.selectByExample(userExample);

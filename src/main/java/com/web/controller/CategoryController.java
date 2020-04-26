@@ -20,9 +20,13 @@ public class CategoryController {
 
     @ApiOperation("分类的保存或更新")
     @PostMapping("/saveOrUpdate")
-    public Message saveOrUpdate(Category category) throws Exception {
-        categoryService.saveOrUpdate(category);
-        return MessageUtil.success("更新成功！");
+    public Message saveOrUpdate(Category category) {
+        try {
+            categoryService.saveOrUpdate(category);
+            return MessageUtil.success("更新成功！");
+        } catch (Exception e) {
+            return MessageUtil.error(e.getMessage());
+        }
     }
 
     @ApiOperation("查询所有父级分类")
